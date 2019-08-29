@@ -1,50 +1,67 @@
 {% set name = "zeroc-ice" %}
-{% set version = "3.6.4" %}
+{% set version = "3.6.5" %}
 
 package:
   name: "{{ name|lower }}"
   version: "{{ version }}{{ environ.get('VERSION_SUFFIX', '') }}"
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: fe0ebacb6996870d0aa46511c126f9b3cfe88257517a5608d63332e9b6fb1717
+  url: https://github.com/zeroc-ice/ice/archive/v{{ version }}.tar.gz
+  sha256: 5c308c24c9721dd614d28cf5a5fa9ac19736f7a8ab894f9fd05fe5b9ac0be4fe
   patches:
-    # https://forums.zeroc.com/discussion/46580/python-3-6-3-ice-3-5-1-crash-on-exit
-    # https://github.com/zeroc-ice/ice/commit/5008cf82774e77b119d371a2677ac36060184e78
-    - 0001-ice8496-python_crash_on_exit.diff
+    - omero-zeroc-linux.patch
 
 build:
   number: 0
-  entry_points:
-    - slice2py=slice2py:main
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
   script_env:
     - VERSION_SUFFIX
 
 requirements:
   build:
+    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
     - bzip2
     - expat
+    - openjdk=8
+    - libdb53
+    - make
     - openssl
     - pip
     - python
   run:
-    - python
+    - libdb53
     - openssl
+    - python
 
 test:
-  imports:
-    - Glacier2
-    - Ice
-    - IceBox
-    - IceGrid
-    - IceMX
-    - IcePatch2
-    - IceStorm
+  requires:
+    - passlib
   commands:
-    - slice2py --help
+    # - python allTests.py --debug --env --protocol=ssl
+    - dumpdb --version
+    - glacier2router --version
+    - icebox --version
+    - iceboxadmin --version
+    - icegridadmin --version
+    - icegriddb --version
+    - icegridnode --version
+    - icegridregistry --version
+    - icepatch2calc --version
+    - icepatch2client --version
+    - icepatch2server --version
+    - icestormadmin --version
+    - icestormdb --version
+    - slice2cpp --version
+    - slice2cs --version
+    - slice2freeze --version
+    - slice2freezej --version
+    - slice2html --version
+    - slice2java --version
+    - slice2js --version
+    - slice2php --version
+    - slice2py --version
+    - transformdb --version
 
 about:
   home: https://zeroc.com

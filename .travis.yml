@@ -15,6 +15,7 @@ matrix:
 env:
   global:
     - PACKAGE_NAME=zeroc-ice
+    - REQUIREMENTS_CHANNEL=manics
     - PATH="$HOME/miniconda/bin:$PATH"
 
 install:
@@ -42,7 +43,7 @@ script:
     else
       export VERSION_SUFFIX="";
     fi
-  - conda build --python $PYTHON .
+  - conda build -c ${REQUIREMENTS_CHANNEL} --python $PYTHON .
 
 deploy:
   - provider: script

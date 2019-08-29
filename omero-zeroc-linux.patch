@@ -1,0 +1,87 @@
+diff --git a/Makefile b/Makefile
+index 7b93613b7e..d6666becac 100644
+--- a/Makefile
++++ b/Makefile
+@@ -7,17 +7,10 @@
+ #
+ # **********************************************************************
+ 
+-SUBDIRS		= cpp java js python ruby php
+-CLEAN_SUBDIRS	= js java python ruby php cpp
+-DEPEND_SUBDIRS	= cpp python ruby php
+-INSTALL_SUBDIRS	= cpp java python ruby php
+-
+-ifeq ($(shell uname),Darwin)
+-SUBDIRS		+= objective-c
+-CLEAN_SUBDIRS	+= objective-c
+-DEPEND_SUBDIRS	+= objective-c
+-INSTALL_SUBDIRS	+= objective-c
+-endif
++SUBDIRS	= cpp java python
++CLEAN_SUBDIRS	= java python cpp
++DEPEND_SUBDIRS	= cpp python
++INSTALL_SUBDIRS	= cpp java python
+ 
+ all::
+ 	@for subdir in $(SUBDIRS); \
+diff --git a/allTests.py b/allTests.py
+index e907e072ea..e9baab0960 100755
+--- a/allTests.py
++++ b/allTests.py
+@@ -15,11 +15,7 @@ import TestUtil
+ 
+ testGroups = []
+ 
+-languages = [ "cpp", "java", "python", "ruby", "php", "js" ]
+-if TestUtil.isWin32():
+-    languages.append("csharp")
+-if TestUtil.isDarwin():
+-    languages.append("objective-c")
++languages = [ "cpp", "java", "python" ]
+ 
+ for d in languages:
+ 
+diff --git a/config/Make.common.rules b/config/Make.common.rules
+index 64fae279bf..d986442054 100644
+--- a/config/Make.common.rules
++++ b/config/Make.common.rules
+@@ -140,16 +140,6 @@ ifneq ($(findstring MINGW,$(UNAME)),)
+     endif
+ endif
+ 
+-#
+-# Debian
+-#
+-ifneq ($(wildcard /etc/debian_version),)
+-    HOST_ARCH          	= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+-    DEB_HOST_MULTIARCH 	?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+-    lp64suffix		?= /$(DEB_HOST_MULTIARCH)
+-    lp32suffix		?= /$(DEB_HOST_MULTIARCH)
+-endif
+-
+ 
+ 
+ ifeq ($(LP64),yes)
+diff --git a/cpp/config/Make.rules.Linux b/cpp/config/Make.rules.Linux
+index 10120d8bc7..66e248fc91 100644
+--- a/cpp/config/Make.rules.Linux
++++ b/cpp/config/Make.rules.Linux
+@@ -92,7 +92,7 @@ ifeq ($(GCC_COMPILER),yes)
+         endif
+     endif
+ 
+-    CXXFLAGS		+= $(CXXARCHFLAGS) -fvisibility=hidden -Wall -Werror -pthread
++    CXXFLAGS		+= $(CXXARCHFLAGS) -fvisibility=hidden -Wall -pthread
+ 
+     # If MAXWARN is set then enable extra warnings
+     ifeq ($(MAXWARN),yes)
+@@ -221,7 +221,8 @@ ICESSL_LIBS     = $(OPENSSL_RPATH_LINK) -lIceSSL
+ LIBS		= $(BZIP2_RPATH_LINK) -lIce $(BASELIBS)
+ 
+ CRYPT_OS_LIBS   = -lcrypt
+-ICEUTIL_OS_LIBS = -lrt $(OPENSSL_RPATH_LINK) -lcrypto
++ICEUTIL_OS_LIBS = -lrt $(OPENSSL_RPATH_LINK) $(OPENSSL_LIBS)
+ ICE_OS_LIBS     = -ldl
++BASELIBS	+= $(ICEUTIL_OS_LIBS)
+ 
+ PLATFORM_HAS_READLINE   = yes
