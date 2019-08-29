@@ -1,4 +1,4 @@
-{% set name = "zeroc-ice" %}
+{% set name = "zeroc-ice-bin" %}
 {% set version = "3.6.5" %}
 
 package:
