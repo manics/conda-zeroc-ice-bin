@@ -1,8 +1,8 @@
-{% set name = "zeroc-ice-bin" %}
+{% set name = "zeroc-ice" %}
 {% set version = "3.6.5" %}
 
 package:
-  name: "{{ name|lower }}"
+  name: "{{ name }}"
   version: "{{ version }}{{ environ.get('VERSION_SUFFIX', '') }}"
 
 source:
@@ -28,40 +28,55 @@ requirements:
     - make
     - openssl
     - pip
-    - python
-  run:
-    - libdb53
-    - openssl
-    - python
 
-test:
-  requires:
-    - passlib
-  commands:
-    # - python allTests.py --debug --env --protocol=ssl
-    - dumpdb --version
-    - glacier2router --version
-    - icebox --version
-    - iceboxadmin --version
-    - icegridadmin --version
-    - icegriddb --version
-    - icegridnode --version
-    - icegridregistry --version
-    - icepatch2calc --version
-    - icepatch2client --version
-    - icepatch2server --version
-    - icestormadmin --version
-    - icestormdb --version
-    - slice2cpp --version
-    - slice2cs --version
-    - slice2freeze --version
-    - slice2freezej --version
-    - slice2html --version
-    - slice2java --version
-    - slice2js --version
-    - slice2php --version
-    - slice2py --version
-    - transformdb --version
+outputs:
+  - name: {{ name }}-libs
+    requirements:
+      run:
+        - bzip2
+        - expat
+        - libdb53
+        - openssl
+    files:
+      - bin/
+      # - config
+      - include/
+      - lib/
+      # - man
+      - slice/
+    test:
+      commands:
+        - dumpdb --version
+        - glacier2router --version
+        - icebox --version
+        - iceboxadmin --version
+        - icegridadmin --version
+        - icegriddb --version
+        - icegridnode --version
+        - icegridregistry --version
+        - icepatch2calc --version
+        - icepatch2client --version
+        - icepatch2server --version
+        - icestormadmin --version
+        - icestormdb --version
+        - slice2cpp --version
+        - slice2cs --version
+        - slice2freeze --version
+        - slice2freezej --version
+        - slice2html --version
+        - slice2java --version
+        - slice2js --version
+        - slice2php --version
+        - slice2py --version
+        - transformdb --version
+  - name: {{ name }}-java
+    requirements:
+      run:
+        - openjdk
+    files:
+      - share/java/
+  # Python module is packaged separately to support multiple Python versions
+  # without recompiling the rest of Ice
 
 about:
   home: https://zeroc.com
