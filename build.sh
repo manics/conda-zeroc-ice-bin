@@ -27,3 +27,12 @@ export BZIP2_HOME DB_HOME EXPAT_HOME OPENSSL_HOME ICONV_HOME READLINE_HOME
 make -C cpp -j$CPU_COUNT
 
 make -C cpp prefix=$PREFIX install
+
+# Move some directories into share
+rm -rf $PREFIX/config/__pycache__/
+mkdir -p $PREFIX/share/zeroc-ice
+mv $PREFIX/config/* $PREFIX/slice $PREFIX/share/zeroc-ice/
+rmdir $PREFIX/config
+
+# slice2py is in the Python package
+rm $PREFIX/bin/slice2py

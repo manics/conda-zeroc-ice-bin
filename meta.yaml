@@ -73,7 +73,6 @@ test:
     - slice2java --version
     - slice2js --version
     - slice2php --version
-    - slice2py --version
     - transformdb --version
 
 about:

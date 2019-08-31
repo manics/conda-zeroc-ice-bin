@@ -4,17 +4,11 @@ language: generic
 matrix:
   include:
     - os: linux
-      env: PYTHON=2.7
-    # - os: linux
-    #   env: PYTHON=3.6
     # - os: osx
-    #   env: PYTHON=2.7
-    # - os: osx
-    #   env: PYTHON=3.6
 
 env:
   global:
-    - PACKAGE_NAME=zeroc-ice
+    - PACKAGE_NAME=zeroc-ice-bin
     - REQUIREMENTS_CHANNEL=manics
     - PATH="$HOME/miniconda/bin:$PATH"
 
@@ -43,7 +37,7 @@ script:
     else
       export VERSION_SUFFIX="";
     fi
-  - conda build -c ${REQUIREMENTS_CHANNEL} --python $PYTHON .
+  - conda build -c ${REQUIREMENTS_CHANNEL} .
 
 deploy:
   - provider: script
