@@ -1,4 +1,4 @@
-{% set name = "zeroc-ice" %}
+{% set name = "zeroc-ice-bin" %}
 {% set version = "3.6.5" %}
 
 package:
@@ -6,10 +6,19 @@ package:
   version: "{{ version }}{{ environ.get('VERSION_SUFFIX', '') }}"
 
 source:
-  url: https://github.com/zeroc-ice/ice/archive/v{{ version }}.tar.gz
-  sha256: 5c308c24c9721dd614d28cf5a5fa9ac19736f7a8ab894f9fd05fe5b9ac0be4fe
-  patches:
-    - omero-zeroc-linux.patch
+  - url: https://github.com/zeroc-ice/ice/archive/v{{ version }}.tar.gz
+    sha256: 5c308c24c9721dd614d28cf5a5fa9ac19736f7a8ab894f9fd05fe5b9ac0be4fe
+    patches:
+      # Always use lib instead of lib64
+      # Compilation workarounds
+      - omero-zeroc-linux.patch
+  # https://github.com/zeroc-ice/ice/blob/v3.6.5/.travis.yml
+  - url: https://github.com/zeroc-ice/mcpp/archive/v2.7.2.14.tar.gz
+    sha256: 1a426cf2d513ffd66634384d5445dcce1aac83be1789a56044013eab8ca8ffff
+    folder: mcpp
+    patches:
+      # Always use lib instead of lib64
+      - omero-zeroc-mcpp-lib64.patch
 
 build:
   number: 0
@@ -23,60 +32,49 @@ requirements:
   host:
     - bzip2
     - expat
-    - openjdk=8
     - libdb53
     - make
     - openssl
     - pip
+  run:
+    - bzip2
+    - expat
+    - libdb53
+    - openssl
 
-outputs:
-  - name: {{ name }}-libs
-    requirements:
-      run:
-        - bzip2
-        - expat
-        - libdb53
-        - openssl
-    files:
-      - bin/
-      # - config
-      - include/
-      - lib/
-      # - man
-      - slice/
-    test:
-      commands:
-        - dumpdb --version
-        - glacier2router --version
-        - icebox --version
-        - iceboxadmin --version
-        - icegridadmin --version
-        - icegriddb --version
-        - icegridnode --version
-        - icegridregistry --version
-        - icepatch2calc --version
-        - icepatch2client --version
-        - icepatch2server --version
-        - icestormadmin --version
-        - icestormdb --version
-        - slice2cpp --version
-        - slice2cs --version
-        - slice2freeze --version
-        - slice2freezej --version
-        - slice2html --version
-        - slice2java --version
-        - slice2js --version
-        - slice2php --version
-        - slice2py --version
-        - transformdb --version
-  - name: {{ name }}-java
-    requirements:
-      run:
-        - openjdk
-    files:
-      - share/java/
-  # Python module is packaged separately to support multiple Python versions
-  # without recompiling the rest of Ice
+files:
+  - bin/
+  # - config
+  - include/
+  - lib/
+  # - man
+  - slice/
+
+test:
+  commands:
+    - dumpdb --version
+    - glacier2router --version
+    - icebox --version
+    - iceboxadmin --version
+    - icegridadmin --version
+    - icegriddb --version
+    - icegridnode --version
+    - icegridregistry --version
+    - icepatch2calc --version
+    - icepatch2client --version
+    - icepatch2server --version
+    - icestormadmin --version
+    - icestormdb --version
+    - slice2cpp --version
+    - slice2cs --version
+    - slice2freeze --version
+    - slice2freezej --version
+    - slice2html --version
+    - slice2java --version
+    - slice2js --version
+    - slice2php --version
+    - slice2py --version
+    - transformdb --version
 
 about:
   home: https://zeroc.com

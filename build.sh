@@ -7,10 +7,7 @@ env | sort
 ln -s $AR $(dirname $AR)/ar
 ar --version
 
-# https://github.com/zeroc-ice/ice/blob/v3.6.5/.travis.yml
-git clone -b v2.7.2.14 https://github.com/zeroc-ice/mcpp.git mcpp
 make -C mcpp
-cp mcpp/lib/*/* mcpp/lib/
 export MCPP_HOME=$PWD/mcpp
 
 export GCC_COMPILER=yes
@@ -27,11 +24,6 @@ READLINE_HOME=$PREFIX
 
 export BZIP2_HOME DB_HOME EXPAT_HOME OPENSSL_HOME ICONV_HOME READLINE_HOME
 
-# TODO: is this needed?
-MAKE_ARGS="embedded_runpath=no LP64=yes"
-make $MAKE_ARGS -j$CPU_COUNT
+make -C cpp -j$CPU_COUNT
 
-make prefix=$PREFIX install
-
-# This isn't a correct Python module so remove from final package
-rm -rf $PREFIX/python
+make -C cpp prefix=$PREFIX install
