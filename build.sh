@@ -5,7 +5,6 @@ set -eux
 env | sort
 # zeroc-ice ignores $AR
 ln -s $AR $(dirname $AR)/ar
-ar --version
 
 make -C mcpp
 export MCPP_HOME=$PWD/mcpp
