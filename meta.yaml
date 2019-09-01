@@ -42,14 +42,6 @@ requirements:
     - libdb53
     - openssl
 
-files:
-  - bin/
-  # - config
-  - include/
-  - lib/
-  # - man
-  - slice/
-
 test:
   commands:
     - dumpdb --version
