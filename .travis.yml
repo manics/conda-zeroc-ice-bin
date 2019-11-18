@@ -8,7 +8,7 @@ matrix:
 
 env:
   global:
-    - PACKAGE_NAME=zeroc-ice-bin
+    - PACKAGE_NAME=zeroc-ice36-bin
     - ANACONDA_USER="${TRAVIS_REPO_SLUG%/*}"
     - PATH="$HOME/miniconda/bin:$PATH"
 
