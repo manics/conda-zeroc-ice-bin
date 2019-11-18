@@ -1,3 +1,46 @@
+diff --git a/Makefile b/Makefile
+index 7b93613b7e..d6666becac 100644
+--- a/Makefile
++++ b/Makefile
+@@ -7,17 +7,10 @@
+ #
+ # **********************************************************************
+ 
+-SUBDIRS		= cpp java js python ruby php
+-CLEAN_SUBDIRS	= js java python ruby php cpp
+-DEPEND_SUBDIRS	= cpp python ruby php
+-INSTALL_SUBDIRS	= cpp java python ruby php
+-
+-ifeq ($(shell uname),Darwin)
+-SUBDIRS		+= objective-c
+-CLEAN_SUBDIRS	+= objective-c
+-DEPEND_SUBDIRS	+= objective-c
+-INSTALL_SUBDIRS	+= objective-c
+-endif
++SUBDIRS	= cpp java
++CLEAN_SUBDIRS	= java cpp
++DEPEND_SUBDIRS	= cpp
++INSTALL_SUBDIRS	= cpp java
+ 
+ all::
+ 	@for subdir in $(SUBDIRS); \
+diff --git a/allTests.py b/allTests.py
+index e907e072ea..e9baab0960 100755
+--- a/allTests.py
++++ b/allTests.py
+@@ -15,11 +15,7 @@ import TestUtil
+ 
+ testGroups = []
+ 
+-languages = [ "cpp", "java", "python", "ruby", "php", "js" ]
+-if TestUtil.isWin32():
+-    languages.append("csharp")
+-if TestUtil.isDarwin():
+-    languages.append("objective-c")
++languages = [ "cpp", "java" ]
+ 
+ for d in languages:
+ 
 diff --git a/config/Make.common.rules b/config/Make.common.rules
 index 64fae279bf..c6dabb60c6 100644
 --- a/config/Make.common.rules

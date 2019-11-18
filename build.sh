@@ -23,9 +23,9 @@ READLINE_HOME=$PREFIX
 
 export BZIP2_HOME DB_HOME EXPAT_HOME OPENSSL_HOME ICONV_HOME READLINE_HOME
 
-make -C cpp -j$CPU_COUNT
+make -j$CPU_COUNT
 
-make -C cpp prefix=$PREFIX install
+make prefix=$PREFIX install
 
 # Move some directories into share
 rm -rf $PREFIX/config/__pycache__/
